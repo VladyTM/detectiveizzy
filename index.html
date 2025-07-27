@@ -1,11 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Case A — The Acrostic</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+           background:#0f0f14; color:#e8e8f0; margin:0; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 24px; }
+    .card { background:#171720; border:1px dashed #2a2a36; border-radius:12px; padding:16px; }
+    .btn { background:#f5c14b; color:#111; font-weight:700; border:none; border-radius:10px; padding:10px 14px; cursor:pointer; }
+    .input { width:100%; padding:10px 12px; background:#0f0f16; color:#e8e8f0; border:1px solid #2a2a36; border-radius:10px; margin:8px 0; }
+    .hint, .msg { color:#9aa0a6; font-size:14px; }
+    .ok { color:#9ae6b4; } .bad { color:#feb2b2; }
+  </style>
 </head>
 <body>
-    
+  <div class="wrap">
+    <h1>Case A — The Acrostic</h1>
+    <div class="card">
+      <p id="clue" style="font-size:1.15rem; line-height:1.6">
+        Little emeralds adorn fronds.
+      </p>
+
+      <p class="hint">Take <em>the first letter of every word</em>. Ignore punctuation. Use uppercase, no spaces.</p>
+
+      <input id="answer" class="input" placeholder="Enter the code…" autocomplete="off" />
+      <button id="submit" class="btn">Submit</button>
+      <button id="hintBtn" class="btn" style="margin-left:8px" disabled>Hint (unlocks soon)</button>
+      <div id="msg" class="msg" style="min-height:22px"></div>
+      <div id="hintBox" class="hint" style="display:none"></div>
+    </div>
+  </div>
+
+  <script>
+    // Build expected code from the sentence text (no stored answer)
+    function codeFromSentence(text) {
+      return text
+        .replace(/[^\w\s'-]/g, " ")      // strip punctuation to spaces
+        .split(/\s+/)                    // words by whitespace
+        .filter(Boolean)
+        .map(w => w[0])                  // first letter of each word
+        .join("")
+        .toUpperCase();
+    }
+
+    function normalize(s){ return (s || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); }
+
+    const clueEl = document.getElementById("clue");
+    const expected = codeFromSentence(clueEl.innerText);
+    const input = document.getElementById("answer");
+    const btn = document.getElementById("submit");
+    const msg = document.getElementById("msg");
+
+    // Optional: delayed hint
+    const hintBtn = document.getElementById("hintBtn");
+    const hintBox = document.getElementById("hintBox");
+    setTimeout(() => { hintBtn.disabled = false; }, 20000);
+    let hintLevel = 0;
+    hintBtn.addEventListener("click", () => {
+      hintLevel++;
+      hintBox.style.display = "block";
+      if (hintLevel === 1) hintBox.textContent = "Read the very first letters, left to right.";
+      else if (hintLevel === 2) hintBox.textContent = "Example: 'Red Apple Pie' → RAP.";
+      else hintBox.textContent = `It starts with '${expected[0]}' and has ${expected.length} letters.`;
+    });
+
+    btn.addEventListener("click", () => {
+      const val = normalize(input.value);
+      if (!val) { msg.textContent = "Type your code first."; msg.className = "msg"; return; }
+      if (val === expected) {
+        msg.textContent = "Correct! Case A solved.";
+        msg.className = "msg ok";
+        // (Later: save progress in localStorage and return to board)
+      } else {
+        msg.textContent = "Not quite. Try the first letters only, in order.";
+        msg.className = "msg bad";
+      }
+    });
+  </script>
 </body>
 </html>
