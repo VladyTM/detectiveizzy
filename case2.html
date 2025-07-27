@@ -1,11 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Case 2 — The Alibi</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    Hello 
+  <div class="container">
+    <h1>Case 2 - Someone's lying...</h1>
+    <div class="clue-box">
+      <h2>Scene Report</h2>
+      <p>Four suspects claim where they were between <strong>5:00 and 5:40</strong>.</p>
+    </div>
+
+    <div class="paragraph-box">
+      <p><strong>Alex:</strong> "I arrived at 5:00 and left at 5:30."</p>
+      <p><strong>Bella:</strong> "I was there from 5:10 to 5:40."</p>
+      <p><strong>Charlie:</strong> "I came before Bella and left before 5:20."</p>
+      <p><strong>Dani:</strong> "I didn’t overlap with Charlie at all."</p>
+      <p class="hint">Only one suspect is lying. Who is it?</p>
+    </div>
+
+    <div class="input-box">
+      <input type="text" id="answer" placeholder="Type the liar's name (e.g., DANI)" />
+      <button id="submit">Submit</button>
+      <p id="feedback" class="feedback"></p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('submit').addEventListener('click', function () {
+      const input = document.getElementById('answer').value.trim().toUpperCase();
+      const feedback = document.getElementById('feedback');
+      if (input === "DANI") {
+        window.location.href = "case3.html";
+      } else {
+        feedback.textContent = "That’s not correct. Check the overlaps again.";
+        feedback.classList.add("show");
+      }
+    });
+  </script>
 </body>
 </html>
