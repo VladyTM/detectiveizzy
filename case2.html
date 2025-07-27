@@ -3,43 +3,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Case 2 — The Alibi</title>
+  <title>Case 2 - The Sneak</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="container">
-    <h1>Case 2 - Someone's lying...</h1>
+    <h1>Case 2 - The Sneak</h1>
+
     <div class="clue-box">
-      <h2>Scene Report</h2>
-      <p>Four suspects claim where they were between <strong>5:00 and 5:40</strong>.</p>
+      <h2>Briefing</h2>
+      <p>Someone visited your house last night to hide a secret message. Five suspects were interviewed. Four have solid alibis. One does not. Identify who the visitor was and they will tell you where to look.</p>
     </div>
 
     <div class="paragraph-box">
-      <p><strong>Alex:</strong> "I arrived at 5:00 and left at 5:30."</p>
-      <p><strong>Bella:</strong> "I was there from 5:10 to 5:40."</p>
-      <p><strong>Charlie:</strong> "I came before Bella and left before 5:20."</p>
-      <p><strong>Dani:</strong> "I didn’t overlap with Charlie at all."</p>
-      <p class="hint">Only one suspect is lying. Who is it?</p>
+      <h3>Statements:</h3>
+      <p><strong>Sox:</strong> "I was at the cinema from 19:00 to 21:30 with Mittens. He can confirm."</p>
+      <p><strong>Francois:</strong> "I was home alone, but I was on a video call with my sister from 20:00 to 21:00."</p>
+      <p><strong>Snuggles:</strong> "I was out walking my dog from 20:00 to 20:45, and I passed AH! at the coffee shop at 20:30."</p>
+      <p><strong>Mittens:</strong> "I was reading at the library from 19:30 until closing at 21:00. You can ask the librarian."</p>
+      <p><strong>AH!:</strong> "I stopped by the coffee shop at 20:15 and stayed until 20:45. Didn't see Snuggles, though."</p>
+    </div>
+
+    <div class="clue-box">
+      <h2>Notes</h2>
+      <ul>
+        <li>The coffee shop has a record of AH! arriving at 20:15 and leaving at 20:45.</li>
+        <li>The librarian confirmed Mittens checked out a book at 21:00.</li>
+        <li>Video call logs show Francois was online from 20:00 to 21:00.</li>
+        <li>Movie tickets confirm Sox and Mittens entered the cinema at 19:05 and left at 21:35.</li>
+        <li>Snuggles claims to have seen AH! at 20:30, but AH! says they never saw him.</li>
+      </ul>
     </div>
 
     <div class="input-box">
-      <input type="text" id="answer" placeholder="Type the liar's name (e.g., DANI)" />
+      <p><em>Who visited the house?</em></p>
+      <input type="text" id="answer" placeholder="Type their name (e.g., SNUGGLES)" />
       <button id="submit">Submit</button>
       <p id="feedback" class="feedback"></p>
     </div>
   </div>
 
+  <!-- Overlay & Popup -->
+  <div class="overlay" id="overlay"></div>
+  <div class="popup" id="popup">
+    <h2>You found them!</h2>
+    <p>The message was hidden by Snuggles. 💌</p>
+    <p><strong>Look inside your pillowcase.</strong></p>
+    <button onclick="closePopup()">Close</button>
+  </div>
+
   <script>
+    const popup = document.getElementById("popup");
+    const overlay = document.getElementById("overlay");
+
     document.getElementById('submit').addEventListener('click', function () {
       const input = document.getElementById('answer').value.trim().toUpperCase();
       const feedback = document.getElementById('feedback');
-      if (input === "DANI") {
-        window.location.href = "case3.html";
+
+      if (input === "SNUGGLES") {
+        feedback.textContent = "";
+        popup.classList.add("show");
+        overlay.classList.add("show");
       } else {
-        feedback.textContent = "That’s not correct. Check the overlaps again.";
+        feedback.textContent = "That’s not quite right. Try comparing their timelines again.";
         feedback.classList.add("show");
       }
     });
+
+    function closePopup() {
+      popup.classList.remove("show");
+      overlay.classList.remove("show");
+    }
   </script>
 </body>
 </html>
